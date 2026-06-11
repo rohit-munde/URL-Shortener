@@ -4,5 +4,6 @@ import com.example.url_shortener.entity.UrlEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UrlRepository extends JpaRepository<UrlEntity, Long> {
-    UrlEntity findByShortCode(String shortCode);
+    UrlEntity findByShortUrlCode(String shortCode);
+    UrlEntity findByUrlHash(String originalUrl);
 }

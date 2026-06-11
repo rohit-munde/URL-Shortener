@@ -10,14 +10,17 @@ public class UrlEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(length = 2048, nullable = false)
     private String originalUrl;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String shortUrlCode;
 
     @Column
     private Long clickCount;
+
+    @Column(length = 64, nullable = false, unique = true)
+    private String urlHash;
 
     @Column(nullable = true, updatable = false)
     private LocalDateTime createdAt;
@@ -25,13 +28,18 @@ public class UrlEntity {
     @Column(nullable = true)
     private LocalDateTime updatedAt;
 
-    public UrlEntity(Long id, String originalUrl, String shortUrlCode, Long clickCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UrlEntity() {
+    }
+
+    public UrlEntity(Long id, String originalUrl, String shortUrlCode, Long clickCount, LocalDateTime createdAt,
+            LocalDateTime updatedAt, String urlHash) {
         this.id = id;
         this.originalUrl = originalUrl;
         this.shortUrlCode = shortUrlCode;
         this.clickCount = clickCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.urlHash = urlHash;
     }
 
     public Long getId() {
@@ -80,5 +88,13 @@ public class UrlEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getUrlHash() {
+        return urlHash;
+    }
+
+    public void setUrlHash(String urlHash) {
+        this.urlHash = urlHash;
     }
 }

@@ -2,6 +2,8 @@ package com.example.url_shortener.controller;
 
 import com.example.url_shortener.dto.CreateShortUrlDTO;
 import com.example.url_shortener.dto.ShortUrlResponse;
+import com.example.url_shortener.service.ShortUrlService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,13 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UrlController {
 
+    private ShortUrlService shortUrlService;
+
+    public UrlController(ShortUrlService shortUrlService) {
+        this.shortUrlService = shortUrlService;
+    }
+
     @PostMapping("shorten")
     public ShortUrlResponse createShortUrl(@RequestBody CreateShortUrlDTO createShortUrlDTO) {
-        //pass this DTO to service
-        // Service will generate an unique code
-        //store that code along with the original URL in the DB
-        // return the short url combined baseURL+Code
-        return new ShortUrlResponse("http://short.url/abc123");
+        return this.shortUrlService.createShortUrl(createShortUrlDTO.getOriginalUrl());
     }
 
 }

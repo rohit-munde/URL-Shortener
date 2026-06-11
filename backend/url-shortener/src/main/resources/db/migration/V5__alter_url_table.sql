@@ -1,0 +1,2 @@
+ALTER TABLE urls
+    ADD COLUMN url_hash VARCHAR(64) NOT NULL DEFAULT '';
