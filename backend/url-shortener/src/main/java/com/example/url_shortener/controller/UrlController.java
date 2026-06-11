@@ -11,6 +11,10 @@ public class UrlController {
 
     @PostMapping("shorten")
     public ShortUrlResponse createShortUrl(@RequestBody CreateShortUrlDTO createShortUrlDTO) {
+        //pass this DTO to service
+        // Service will generate an unique code
+        //store that code along with the original URL in the DB
+        // return the short url combined baseURL+Code
         return new ShortUrlResponse("http://short.url/abc123");
     }
 

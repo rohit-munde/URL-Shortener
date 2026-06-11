@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "urls")
-public class Url {
-
+public class UrlEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,7 +14,7 @@ public class Url {
     private String originalUrl;
 
     @Column(nullable = false)
-    private String shortUrl;
+    private String shortUrlCode;
 
     @Column
     private Long clickCount;
@@ -26,10 +25,10 @@ public class Url {
     @Column(nullable = true)
     private LocalDateTime updatedAt;
 
-    public Url(Long id, String originalUrl, String shortUrl, Long clickCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UrlEntity(Long id, String originalUrl, String shortUrlCode, Long clickCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.originalUrl = originalUrl;
-        this.shortUrl = shortUrl;
+        this.shortUrlCode = shortUrlCode;
         this.clickCount = clickCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -51,12 +50,12 @@ public class Url {
         this.originalUrl = originalUrl;
     }
 
-    public String getShortUrl() {
-        return shortUrl;
+    public String getShortUrlCode() {
+        return shortUrlCode;
     }
 
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
+    public void setShortUrlCode(String shortUrl) {
+        this.shortUrlCode = shortUrl;
     }
 
     public Long getClickCount() {
