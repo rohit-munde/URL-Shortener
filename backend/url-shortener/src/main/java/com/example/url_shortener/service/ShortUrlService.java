@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.url_shortener.repository.UrlRepository;
 import org.springframework.util.DigestUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -15,12 +16,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ShortUrlService {
-    private final Map<String, String> cache = new ConcurrentHashMap<>();
+    private final StringRedisTemplate redisTemplate;
 
     @Autowired
-    private UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
 
     private static final String BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    public ShortUrlService(StringRedisTemplate redisTemplate, UrlRepository urlRepository) {
+        this.redisTemplate = redisTemplate;
+        this.urlRepository = urlRepository;
+    }
 
     private String generateUniqueCode(Long id) {
        if (id == 0) {
@@ -55,15 +61,18 @@ public class ShortUrlService {
 
     public String getOriginalUrl(String shortCode) {
         //We should first check the cache and if its not present in cache then else below code should run
-        if(cache.containsKey(shortCode)) {
-            return cache.get(shortCode);
+        String cacheKey = "url:" + shortCode;
+        String cachedUrl = redisTemplate.opsForValue().get(cacheKey);
+
+        if(cachedUrl != null) {
+            return cachedUrl;
         }
         UrlEntity urlEntity = urlRepository.findByShortUrlCode(shortCode);
         if (urlEntity == null) {
             // Throwing the custom exception instead of returning null
             throw new UrlNotFoundException("Short URL code '" + shortCode + "' not found");
         }
-        cache.put(shortCode, urlEntity.getOriginalUrl());
+        redisTemplate.opsForValue().set(cacheKey, urlEntity.getOriginalUrl());
         return urlEntity.getOriginalUrl().replace(" ","%20");
     }
 }
