@@ -37,4 +37,17 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
+
+    // Generic Exception Handler in case unhandled exception comes and should not fuck up our server
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<@NonNull ApiErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
+
+        ApiErrorResponse apiError = new ApiErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                "An unexpected error occurred. Please try again later.",
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

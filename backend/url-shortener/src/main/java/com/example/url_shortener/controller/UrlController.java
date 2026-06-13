@@ -1,6 +1,7 @@
 package com.example.url_shortener.controller;
 
 import com.example.url_shortener.dto.CreateShortUrlDTO;
+import com.example.url_shortener.dto.GetOriginalUrlDto;
 import com.example.url_shortener.payload.ShortUrlResponsePayload;
 import com.example.url_shortener.response.ApiSuccessResponse;
 import com.example.url_shortener.service.ShortUrlService;
@@ -15,7 +16,7 @@ import java.net.URI;
 @RestController
 public class UrlController {
 
-    private ShortUrlService shortUrlService;
+    private final ShortUrlService shortUrlService;
 
     public UrlController(ShortUrlService shortUrlService) {
         this.shortUrlService = shortUrlService;
@@ -28,8 +29,8 @@ public class UrlController {
     }
 
     @GetMapping("/{shortCode}")
-    public ResponseEntity<Void> getOriginalUrl(@PathVariable String shortCode) {
-        String originalUrl = this.shortUrlService.getOriginalUrl(shortCode);
+    public ResponseEntity<Void> getOriginalUrl(@Valid @PathVariable GetOriginalUrlDto getOriginalUrlDto) {
+        String originalUrl = this.shortUrlService.getOriginalUrl(getOriginalUrlDto.getShortCode());
         if (originalUrl != null) {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .location(URI.create(originalUrl))
