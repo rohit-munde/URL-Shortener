@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
     // Generic Exception Handler in case unhandled exception comes and should not fuck up our server
     @ExceptionHandler(Exception.class)
     public ResponseEntity<@NonNull ApiErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
+        ex.printStackTrace(); // Print stack trace to help debug 500 errors
 
         ApiErrorResponse apiError = new ApiErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),

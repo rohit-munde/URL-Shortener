@@ -55,6 +55,6 @@ public class ShortUrlService {
             // Throwing the custom exception instead of returning null
             throw new UrlNotFoundException("Short URL code '" + shortCode + "' not found");
         }
-        return urlEntity.getOriginalUrl();
+        return urlEntity.getOriginalUrl().replace(" ","%20");
     }
 }
