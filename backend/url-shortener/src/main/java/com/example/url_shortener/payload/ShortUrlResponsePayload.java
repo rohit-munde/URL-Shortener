@@ -1,9 +1,9 @@
-package com.example.url_shortener.dto;
+package com.example.url_shortener.payload;
 
-public class ShortUrlResponse {
+public class ShortUrlResponsePayload {
     private String shortUrl;
 
-    public ShortUrlResponse(String shortUrl) {
+    public ShortUrlResponsePayload(String shortUrl) {
         this.shortUrl = shortUrl;
     }
 

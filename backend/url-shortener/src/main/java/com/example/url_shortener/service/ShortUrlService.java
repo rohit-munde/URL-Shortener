@@ -1,6 +1,7 @@
 package com.example.url_shortener.service;
 
-import com.example.url_shortener.dto.ShortUrlResponse;
+import com.example.url_shortener.exception.UrlNotFoundException;
+import com.example.url_shortener.payload.ShortUrlResponsePayload;
 import com.example.url_shortener.entity.UrlEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,6 @@ import java.nio.charset.StandardCharsets;
 
 @Service
 public class ShortUrlService {
-    //pass this DTO to service
-    // Service will generate an unique code
-    //store that code along with the original URL in the DB
-    // return the short url combined baseURL+Code
-
     @Autowired
     private UrlRepository urlRepository;
 
@@ -35,12 +31,12 @@ public class ShortUrlService {
         return shortUrlCode.reverse().toString();
     }
 
-    public ShortUrlResponse createShortUrl(String originalUrl){
+    public ShortUrlResponsePayload createShortUrl(String originalUrl){
         //check if the original URL already exists in the database
         String urlHash = DigestUtils.md5DigestAsHex(originalUrl.getBytes(StandardCharsets.UTF_8));
         UrlEntity existingEntity = urlRepository.findByUrlHash(urlHash);
         if (existingEntity != null) {
-            return new ShortUrlResponse("http://short.url/" + existingEntity.getShortUrlCode());
+            return new ShortUrlResponsePayload("http://short.url/" + existingEntity.getShortUrlCode());
         }
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setOriginalUrl(originalUrl);
@@ -50,6 +46,15 @@ public class ShortUrlService {
         String shortUrlCode = generateUniqueCode(savedEntity.getId());
         savedEntity.setShortUrlCode(shortUrlCode);
         urlRepository.save(savedEntity);
-        return new ShortUrlResponse("http://short.url/" + savedEntity.getShortUrlCode());
+        return new ShortUrlResponsePayload("http://short.url/" + savedEntity.getShortUrlCode());
+    }
+
+    public String getOriginalUrl(String shortCode) {
+        UrlEntity urlEntity = urlRepository.findByShortUrlCode(shortCode);
+        if (urlEntity == null) {
+            // Throwing the custom exception instead of returning null
+            throw new UrlNotFoundException("Short URL code '" + shortCode + "' not found");
+        }
+        return urlEntity.getOriginalUrl();
     }
 }
