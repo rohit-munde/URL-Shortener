@@ -46,7 +46,7 @@ public class ShortUrlService {
         String urlHash = DigestUtils.md5DigestAsHex(originalUrl.getBytes(StandardCharsets.UTF_8));
         UrlEntity existingEntity = urlRepository.findByUrlHash(urlHash);
         if (existingEntity != null) {
-            return new ShortUrlResponsePayload("http://short.url/" + existingEntity.getShortUrlCode());
+            return new ShortUrlResponsePayload("http://localhost:8080/" + existingEntity.getShortUrlCode());
         }
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setOriginalUrl(originalUrl);
@@ -56,7 +56,7 @@ public class ShortUrlService {
         String shortUrlCode = generateUniqueCode(savedEntity.getId());
         savedEntity.setShortUrlCode(shortUrlCode);
         urlRepository.save(savedEntity);
-        return new ShortUrlResponsePayload("http://short.url/" + savedEntity.getShortUrlCode());
+        return new ShortUrlResponsePayload("http://localhost:8080/" + savedEntity.getShortUrlCode());
     }
 
     public String getOriginalUrl(String shortCode) {

@@ -1,0 +1,18 @@
+.app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-paper {
+  padding: 2.5rem !important;
+  border-radius: 16px !important;
+  width: 100%;
+  
+  .title {
+    font-weight: 700;
+    color: #1976d2;
+    margin-bottom: 2rem;
+  }
+}

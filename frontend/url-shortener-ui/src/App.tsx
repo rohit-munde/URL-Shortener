@@ -1,12 +1,10 @@
-import './App.scss'
+import './App.scss';
+import Home from './pages/Home';
 
 function App() {
-
   return (
-    <>
-      <div>This shit is working</div>
-    </>
-  )
+    <Home />
+  );
 }
 
-export default App
+export default App;
