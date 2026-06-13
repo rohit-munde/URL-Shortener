@@ -9,10 +9,14 @@ import com.example.url_shortener.repository.UrlRepository;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 //import org.apache.commons.codec.digest.DigestUtils;
 
 @Service
 public class ShortUrlService {
+    private final Map<String, String> cache = new ConcurrentHashMap<>();
+
     @Autowired
     private UrlRepository urlRepository;
 
@@ -50,11 +54,16 @@ public class ShortUrlService {
     }
 
     public String getOriginalUrl(String shortCode) {
+        //We should first check the cache and if its not present in cache then else below code should run
+        if(cache.containsKey(shortCode)) {
+            return cache.get(shortCode);
+        }
         UrlEntity urlEntity = urlRepository.findByShortUrlCode(shortCode);
         if (urlEntity == null) {
             // Throwing the custom exception instead of returning null
             throw new UrlNotFoundException("Short URL code '" + shortCode + "' not found");
         }
+        cache.put(shortCode, urlEntity.getOriginalUrl());
         return urlEntity.getOriginalUrl().replace(" ","%20");
     }
 }
