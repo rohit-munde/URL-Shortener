@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# URL Shortener UI 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sleek, single-page React application for shortening long URLs. Built with **Vite**, **React**, and **Material UI**.
 
-Currently, two official plugins are available:
+## 📸 Screenshot
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![URL Shortener UI](./screenshot.png)
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Clean & Modern Interface**: Built with Material UI components for a premium look.
+- **Instant Shortening**: Fast API integration to generate short URLs on the fly.
+- **Smart Proxying**: Bypasses browser CORS and `localhost` HTTP restrictions by securely proxying requests directly through the Vite dev server.
+- **Seamless Redirection**: Clicking the generated short URL securely forwards the GET request to the backend and handles the `302` redirect.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend Framework**: React + TypeScript
+- **Build Tool**: Vite
+- **Styling & UI**: SCSS + Material UI (`@mui/material`)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+You will also need your Java Spring Boot backend running on port `8080`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Installation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+3. Open your browser and navigate to the URL provided by Vite (usually `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Backend Integration
+The app relies on your Java backend running at `localhost:8080`.
+- **POST `/shorten`**: Receives the original URL and generates the short URL ID.
+- **GET `/{id}`**: Redirects the user to the original URL.
+*(All requests are automatically proxied via Vite's `vite.config.ts` to avoid CORS issues).*
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📝 License
+This project is open-source and available under the MIT License.
