@@ -1,7 +1,7 @@
-export interface IApiSuccessResponse {
+export interface IApiSuccessResponse<T> {
     success: boolean;
     message: string;
-    payload: IShortenUrlPayload;
+    payload: T;
 }
 
 export interface IShortenUrlPayload {
