@@ -4,7 +4,8 @@ A full-stack application for shortening long URLs. Built with **Java Spring Boot
 
 ## 📸 Screenshot
 
-> *Note: Place your screenshot image in the root directory named `screenshot.png` to have it display here.*
+<img width="1652" height="1596" alt="image" src="https://github.com/user-attachments/assets/77c49a35-5ddb-43e9-8543-8fb456dca896" />
+
 <!-- ![URL Shortener UI Screenshot](./screenshot.png) -->
 
 ## 🏗️ Architecture
