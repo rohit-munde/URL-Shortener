@@ -1,6 +1,6 @@
-# URL Shortener UI 🚀
+# URL Shortener App 🚀
 
-A sleek, single-page React application for shortening long URLs. Built with **Vite**, **React**, and **Material UI**.
+A full-stack application for shortening long URLs. Built with **Java Spring Boot**, **Vite**, **React**, and **Material UI**.
 
 ## 📸 Screenshot
 
@@ -15,6 +15,7 @@ A sleek, single-page React application for shortening long URLs. Built with **Vi
 
 ## 🛠️ Tech Stack
 
+- **Backend Framework**: Java Spring Boot
 - **Frontend Framework**: React + TypeScript
 - **Build Tool**: Vite
 - **Styling & UI**: SCSS + Material UI (`@mui/material`)
