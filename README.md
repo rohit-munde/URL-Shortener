@@ -20,6 +20,16 @@ A full-stack application for shortening long URLs. Built with **Java Spring Boot
 - **Build Tool**: Vite
 - **Styling & UI**: SCSS + Material UI (`@mui/material`)
 
+## ⚡ Redis Caching (Core Architecture)
+
+The backend heavily utilizes **Redis** for caching to ensure high performance and low latency. Since the core functionality of a URL shortener involves frequent read operations (redirecting from a short URL to the original URL), Redis serves as an in-memory data store to quickly retrieve the long URLs without hitting the primary database on every request. This significantly reduces the response time and allows the application to scale efficiently under high traffic.
+
+## 🔀 Redirection: 302 vs 301
+
+We intentionally use **302 Found (Temporary Redirect)** instead of **301 Moved Permanently** for forwarding users to the original URL.
+- **Why not 301?** A 301 redirect is aggressively cached by browsers. If a browser caches the redirect, subsequent clicks on the short URL would bypass our server entirely and go directly to the destination.
+- **Why 302?** By using a 302 redirect, we ensure that every click passes through our server first. This allows us to track analytics (like click counts, referrer data, and timestamps) accurately for every single visit before forwarding the user.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
