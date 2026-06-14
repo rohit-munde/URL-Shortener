@@ -4,7 +4,7 @@ A full-stack application for shortening long URLs. Built with **Java Spring Boot
 
 ## 📸 Screenshot
 
-![URL Shortener UI](./screenshot.png)
+<img src="./screenshot.png" alt="URL Shortener UI Screenshot" width="800" />
 
 ## 🏗️ Architecture
 
