@@ -11,20 +11,8 @@ A full-stack application for shortening long URLs. Built with **Java Spring Boot
 
 ## 🏗️ Architecture
 
-```mermaid
-graph TD
-    Client([Client / Browser]) -->|1. POST /shorten| API[Spring Boot Backend]
-    Client -->|4. GET /short-id| API
-    
-    API -->|2. Cache new URL| Redis[(Redis Cache)]
-    API -->|3. Persist new URL| DB[(Database)]
-    
-    API -->|5. Lookup short-id| Redis
-    Redis -.->|6a. Cache Hit: Fast Return| API
-    API -.->|6b. Cache Miss: Query DB| DB
-    
-    API -.->|7. 302 Redirect| Client
-```
+<img width="1000" height="1000" alt="image" src="https://github.com/user-attachments/assets/17c1ba5a-08e4-43c3-a262-7083d20f19b3" />
+
 
 ## ✨ Features
 
