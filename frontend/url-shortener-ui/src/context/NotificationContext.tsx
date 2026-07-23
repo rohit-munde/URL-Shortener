@@ -31,8 +31,10 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     };
 
     useEffect(() => {
-        const handleApiError = (errMsg: string) => {
-            showError(errMsg);
+        const handleApiError = (errMsg?: unknown) => {
+            if (typeof errMsg === 'string') {
+                showError(errMsg);
+            }
         };
 
         // Listen to global API errors
