@@ -8,7 +8,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"$$MYSQL_ROOT_PASSWORD\""]
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"$$MYSQL_ROOT_PASSWORD\"" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -34,6 +34,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       SPRING_DATA_REDIS_HOST: redis
+      APP_BASE_URL: ${APP_BASE_URL:-http://13.126.62.213/}
     depends_on:
       url-shortener-db:
         condition: service_healthy

@@ -4,6 +4,7 @@ import com.example.url_shortener.exception.UrlNotFoundException;
 import com.example.url_shortener.payload.ShortUrlResponsePayload;
 import com.example.url_shortener.entity.UrlEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.example.url_shortener.repository.UrlRepository;
 import org.springframework.util.DigestUtils;
@@ -19,11 +20,18 @@ public class ShortUrlService {
     @Autowired
     private final UrlRepository urlRepository;
 
+    private final String appBaseUrl;
+
     private static final String BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    public ShortUrlService(StringRedisTemplate redisTemplate, UrlRepository urlRepository) {
+    public ShortUrlService(
+            StringRedisTemplate redisTemplate,
+            UrlRepository urlRepository,
+            @Value("${app.base-url}") String appBaseUrl
+    ) {
         this.redisTemplate = redisTemplate;
         this.urlRepository = urlRepository;
+        this.appBaseUrl = appBaseUrl.replaceAll("/+$", "");
     }
 
     private String generateUniqueCode(Long id) {
@@ -45,7 +53,7 @@ public class ShortUrlService {
         String urlHash = DigestUtils.md5DigestAsHex(originalUrl.getBytes(StandardCharsets.UTF_8));
         UrlEntity existingEntity = urlRepository.findByUrlHash(urlHash);
         if (existingEntity != null) {
-            return new ShortUrlResponsePayload("http://13.126.62.213/" + existingEntity.getShortUrlCode());
+            return new ShortUrlResponsePayload(buildShortUrl(existingEntity.getShortUrlCode()));
         }
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setOriginalUrl(originalUrl);
@@ -55,7 +63,11 @@ public class ShortUrlService {
         String shortUrlCode = generateUniqueCode(savedEntity.getId());
         savedEntity.setShortUrlCode(shortUrlCode);
         urlRepository.save(savedEntity);
-        return new ShortUrlResponsePayload("http://13.126.62.213/" + savedEntity.getShortUrlCode());
+        return new ShortUrlResponsePayload(buildShortUrl(savedEntity.getShortUrlCode()));
+    }
+
+    private String buildShortUrl(String shortUrlCode) {
+        return appBaseUrl + "/r/" + shortUrlCode;
     }
 
     public String getOriginalUrl(String shortCode) {
