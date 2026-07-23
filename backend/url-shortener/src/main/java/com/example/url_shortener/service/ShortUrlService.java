@@ -27,9 +27,9 @@ public class ShortUrlService {
     }
 
     private String generateUniqueCode(Long id) {
-       if (id == 0) {
-           return "0";
-       }
+        if (id == 0) {
+            return "0";
+        }
         StringBuilder shortUrlCode = new StringBuilder();
         while (id > 0) {
             int remainder = (int) (id % 62);
@@ -40,12 +40,12 @@ public class ShortUrlService {
     }
 
     @Transactional
-    public ShortUrlResponsePayload createShortUrl(String originalUrl){
-        //check if the original URL already exists in the database
+    public ShortUrlResponsePayload createShortUrl(String originalUrl) {
+        // check if the original URL already exists in the database
         String urlHash = DigestUtils.md5DigestAsHex(originalUrl.getBytes(StandardCharsets.UTF_8));
         UrlEntity existingEntity = urlRepository.findByUrlHash(urlHash);
         if (existingEntity != null) {
-            return new ShortUrlResponsePayload("http://localhost:8080/" + existingEntity.getShortUrlCode());
+            return new ShortUrlResponsePayload("http://13.126.62.213/" + existingEntity.getShortUrlCode());
         }
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setOriginalUrl(originalUrl);
@@ -55,15 +55,16 @@ public class ShortUrlService {
         String shortUrlCode = generateUniqueCode(savedEntity.getId());
         savedEntity.setShortUrlCode(shortUrlCode);
         urlRepository.save(savedEntity);
-        return new ShortUrlResponsePayload("http://localhost:8080/" + savedEntity.getShortUrlCode());
+        return new ShortUrlResponsePayload("http://13.126.62.213/" + savedEntity.getShortUrlCode());
     }
 
     public String getOriginalUrl(String shortCode) {
-        //We should first check the cache and if its not present in cache then else below code should run
+        // We should first check the cache and if its not present in cache then else
+        // below code should run
         String cacheKey = "url:" + shortCode;
         String cachedUrl = redisTemplate.opsForValue().get(cacheKey);
 
-        if(cachedUrl != null) {
+        if (cachedUrl != null) {
             return cachedUrl;
         }
         UrlEntity urlEntity = urlRepository.findByShortUrlCode(shortCode);
@@ -72,6 +73,6 @@ public class ShortUrlService {
             throw new UrlNotFoundException("Short URL code '" + shortCode + "' not found");
         }
         redisTemplate.opsForValue().set(cacheKey, urlEntity.getOriginalUrl());
-        return urlEntity.getOriginalUrl().replace(" ","%20");
+        return urlEntity.getOriginalUrl().replace(" ", "%20");
     }
 }
