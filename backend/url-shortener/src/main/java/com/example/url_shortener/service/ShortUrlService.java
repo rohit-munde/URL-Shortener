@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 import com.example.url_shortener.repository.UrlRepository;
 import org.springframework.util.DigestUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-//import org.apache.commons.codec.digest.DigestUtils;
 
 @Service
 public class ShortUrlService {
@@ -41,6 +39,7 @@ public class ShortUrlService {
         return shortUrlCode.reverse().toString();
     }
 
+    @Transactional
     public ShortUrlResponsePayload createShortUrl(String originalUrl){
         //check if the original URL already exists in the database
         String urlHash = DigestUtils.md5DigestAsHex(originalUrl.getBytes(StandardCharsets.UTF_8));
